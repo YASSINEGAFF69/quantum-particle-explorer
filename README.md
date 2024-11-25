@@ -13,7 +13,7 @@ An interactive quantum particle simulation that creates mesmerizing visual effec
 
 ### 🎥 Demo
 
-![Quantum Animation Demo](demo.gif)
+![Quantum Particle Animation Demo](https://i.imgur.com/Bck7TDK.png)
 
 > Experience the mesmerizing quantum particle effects in action! [Try it live](https://cloudwerxlab.github.io/quantum-particle-animation)
 
