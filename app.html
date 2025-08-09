@@ -622,22 +622,22 @@
                             Visual Styles
                         </div>
                         <div class="button-grid">
-                            <button onclick="animation.setPreset('cosmic')">
+                            <button id="cosmicPreset">
                                 <i class="material-icons">dark_mode</i> Cosmic
                             </button>
-                            <button onclick="animation.setPreset('matrix')">
+                            <button id="matrixPreset">
                                 <i class="material-icons">code</i> Matrix
                             </button>
-                            <button onclick="animation.setPreset('fireflies')">
+                            <button id="firefliesPreset">
                                 <i class="material-icons">flare</i> Fireflies
                             </button>
-                            <button onclick="animation.setPreset('rainbow')">
+                            <button id="rainbowPreset">
                                 <i class="material-icons">gradient</i> Rainbow
                             </button>
                         </div>
                     </div>
                     
-                    <button class="special-button" onclick="animation.randomize()">
+                    <button class="special-button" id="randomizeBtn">
                         <i class="material-icons">shuffle</i> Quantum Randomize
                     </button>
                 </div>
@@ -650,16 +650,16 @@
                             Physics Effects
                         </div>
                         <div class="button-grid">
-                            <button id="gravityBtn" onclick="animation.toggleGravityWell()">
+                            <button id="gravityBtn">
                                 <i class="material-icons">compress</i> Gravity
                             </button>
-                            <button id="timeBtn" onclick="animation.toggleTimeDilation()">
+                            <button id="timeBtn">
                                 <i class="material-icons">schedule</i> Time Dilation
                             </button>
-                            <button id="vortexBtn" onclick="animation.toggleVortex()">
+                            <button id="vortexBtn">
                                 <i class="material-icons">rotate_right</i> Vortex
                             </button>
-                            <button id="blackholeBtn" onclick="animation.toggleBlackHole()">
+                            <button id="blackholeBtn">
                                 <i class="material-icons">filter_center_focus</i> Black Hole
                             </button>
                         </div>
@@ -671,28 +671,28 @@
                             Visual Effects
                         </div>
                         <div class="button-grid">
-                            <button id="colorBtn" onclick="animation.toggleColorWave()">
+                            <button id="colorBtn">
                                 <i class="material-icons">colorize</i> Color Wave
                             </button>
-                            <button id="repulsionBtn" onclick="animation.toggleRepulsion()">
+                            <button id="repulsionBtn">
                                 <i class="material-icons">close</i> Repulsion
                             </button>
-                            <button id="pulseBtn" onclick="animation.togglePulseWave()">
+                            <button id="pulseBtn">
                                 <i class="material-icons">waves</i> Pulse Wave
                             </button>
-                            <button id="tornadoBtn" onclick="animation.toggleTornado()">
+                            <button id="tornadoBtn">
                                 <i class="material-icons">cyclone</i> Tornado
                             </button>
-                            <button id="trailsBtn" onclick="animation.toggleTrails()">
+                            <button id="trailsBtn">
                                 <i class="material-icons">timeline</i> Trails
                             </button>
-                            <button id="explosionBtn" onclick="animation.triggerExplosion()">
+                            <button id="explosionBtn">
                                 <i class="material-icons">explosion</i> Collapse
                             </button>
                         </div>
                     </div>
                     
-                    <button class="special-button" onclick="animation.quantumEntanglement()">
+                    <button class="special-button" id="entanglementBtn">
                         <i class="material-icons">link</i> Create Entanglement
                     </button>
                 </div>
@@ -705,10 +705,10 @@
                             Quantum Algorithms
                         </div>
                         <div class="button-grid">
-                            <button id="groverBtn" class="algorithm-btn" onclick="animation.runGroverAlgorithm()">
+                            <button id="groverBtn" class="algorithm-btn">
                                 <i class="material-icons">search</i> Grover's Search
                             </button>
-                            <button id="shorBtn" class="algorithm-btn" onclick="animation.runShorAlgorithm()">
+                            <button id="shorBtn" class="algorithm-btn">
                                 <i class="material-icons">functions</i> Shor's Algorithm
                             </button>
                         </div>
@@ -759,7 +759,7 @@
             <div class="value" id="currentEffect">None</div>
         </div>
         <div class="footer-item">
-            <button onclick="location.reload()">
+            <button id="resetBtn">
                 <i class="material-icons">refresh</i> Reset System
             </button>
         </div>
@@ -906,6 +906,8 @@
                 this.lowFpsWarning = false;
                 this.searchTarget = null;
                 this.algorithmTime = 0;
+                this.vortexCenter = { x: 0, y: 0 };
+                this.blackHoleCenter = { x: 0, y: 0 };
                 
                 this.colorSchemes = {
                     default: () => `hsla(${Math.random() * 360}, 70%, 60%, 0.8)`,
@@ -947,6 +949,13 @@
                     const rect = this.canvas.getBoundingClientRect();
                     this.mousePos.x = e.clientX - rect.left;
                     this.mousePos.y = e.clientY - rect.top;
+                    
+                    if (this.vortexActive) {
+                        this.vortexCenter = { x: this.mousePos.x, y: this.mousePos.y };
+                    }
+                    if (this.blackHoleActive) {
+                        this.blackHoleCenter = { x: this.mousePos.x, y: this.mousePos.y };
+                    }
                 });
 
                 document.getElementById('particleCount').addEventListener('input', (e) => {
@@ -970,6 +979,33 @@
                     this.glowIntensity = parseInt(e.target.value);
                     document.getElementById('glowIntensityValue').textContent = this.glowIntensity;
                 });
+                
+                // Preset buttons
+                document.getElementById('cosmicPreset').addEventListener('click', () => this.setPreset('cosmic'));
+                document.getElementById('matrixPreset').addEventListener('click', () => this.setPreset('matrix'));
+                document.getElementById('firefliesPreset').addEventListener('click', () => this.setPreset('fireflies'));
+                document.getElementById('rainbowPreset').addEventListener('click', () => this.setPreset('rainbow'));
+                
+                // Effect buttons
+                document.getElementById('gravityBtn').addEventListener('click', () => this.toggleGravityWell());
+                document.getElementById('timeBtn').addEventListener('click', () => this.toggleTimeDilation());
+                document.getElementById('vortexBtn').addEventListener('click', () => this.toggleVortex());
+                document.getElementById('blackholeBtn').addEventListener('click', () => this.toggleBlackHole());
+                document.getElementById('colorBtn').addEventListener('click', () => this.toggleColorWave());
+                document.getElementById('repulsionBtn').addEventListener('click', () => this.toggleRepulsion());
+                document.getElementById('pulseBtn').addEventListener('click', () => this.togglePulseWave());
+                document.getElementById('tornadoBtn').addEventListener('click', () => this.toggleTornado());
+                document.getElementById('trailsBtn').addEventListener('click', () => this.toggleTrails());
+                document.getElementById('explosionBtn').addEventListener('click', () => this.triggerExplosion());
+                
+                // Algorithm buttons
+                document.getElementById('groverBtn').addEventListener('click', () => this.runGroverAlgorithm());
+                document.getElementById('shorBtn').addEventListener('click', () => this.runShorAlgorithm());
+                
+                // Special buttons
+                document.getElementById('randomizeBtn').addEventListener('click', () => this.randomize());
+                document.getElementById('entanglementBtn').addEventListener('click', () => this.quantumEntanglement());
+                document.getElementById('resetBtn').addEventListener('click', () => location.reload());
             }
             
             updateParticleSpeed() {
@@ -1039,6 +1075,7 @@
             
             toggleVortex() {
                 this.vortexActive = !this.vortexActive;
+                this.vortexCenter = { x: this.width/2, y: this.height/2 };
                 this.toggleEffect('vortexBtn', 'Quantum Vortex');
             }
 
@@ -1054,6 +1091,7 @@
 
             togglePulseWave() {
                 this.pulseWaveActive = !this.pulseWaveActive;
+                this.pulseTime = 0;
                 this.toggleEffect('pulseBtn', 'Pulse Wave');
             }
 
@@ -1065,6 +1103,7 @@
 
             toggleBlackHole() {
                 this.blackHoleActive = !this.blackHoleActive;
+                this.blackHoleCenter = { x: this.width/2, y: this.height/2 };
                 this.toggleEffect('blackholeBtn', 'Black Hole');
             }
 
@@ -1107,6 +1146,8 @@
                 this.canvas.height = this.canvas.clientHeight;
                 this.width = this.canvas.width;
                 this.height = this.canvas.height;
+                this.vortexCenter = { x: this.width/2, y: this.height/2 };
+                this.blackHoleCenter = { x: this.width/2, y: this.height/2 };
             }
             
             initParticles() {
@@ -1375,6 +1416,49 @@
                         }
                     }
                     
+                    // Vortex effect
+                    if (this.vortexActive) {
+                        const dx = particle.x - this.vortexCenter.x;
+                        const dy = particle.y - this.vortexCenter.y;
+                        const distance = Math.hypot(dx, dy);
+                        
+                        if (distance < 300) {
+                            const angle = Math.atan2(dy, dx);
+                            const rotationSpeed = (300 - distance) * 0.0001;
+                            
+                            // Rotate particle around vortex center
+                            particle.dx += Math.cos(angle + Math.PI/2) * rotationSpeed * 10;
+                            particle.dy += Math.sin(angle + Math.PI/2) * rotationSpeed * 10;
+                            
+                            // Pull particles towards the center
+                            const pullStrength = 0.0002;
+                            particle.dx -= dx * pullStrength;
+                            particle.dy -= dy * pullStrength;
+                        }
+                    }
+                    
+                    // Black Hole effect
+                    if (this.blackHoleActive) {
+                        const dx = particle.x - this.blackHoleCenter.x;
+                        const dy = particle.y - this.blackHoleCenter.y;
+                        const distance = Math.hypot(dx, dy);
+                        
+                        if (distance < 400) {
+                            const angle = Math.atan2(dy, dx);
+                            const pullStrength = (400 - distance) * 0.0003;
+                            
+                            // Pull particles towards the center
+                            particle.dx -= dx * pullStrength;
+                            particle.dy -= dy * pullStrength;
+                            
+                            // Event horizon effect
+                            if (distance < 50) {
+                                particle.dx *= 0.9;
+                                particle.dy *= 0.9;
+                            }
+                        }
+                    }
+                    
                     // Grover's algorithm effect
                     if (this.searchTarget) {
                         const dx = this.searchTarget.x - particle.x;
@@ -1400,8 +1484,6 @@
                         particle.dx += (targetX - particle.x) * 0.01;
                         particle.dy += (targetY - particle.y) * 0.01;
                     }
-                    
-                    // Other effects (vortex, color wave, etc.)...
                     
                     // Time Dilation
                     if (this.timeDilationActive) {
@@ -1430,6 +1512,29 @@
                     this.ctx.beginPath();
                     this.ctx.arc(this.searchTarget.x, this.searchTarget.y, this.searchTarget.radius + pulse, 0, Math.PI * 2);
                     this.ctx.strokeStyle = 'rgba(255, 100, 100, 0.5)';
+                    this.ctx.lineWidth = 2;
+                    this.ctx.stroke();
+                }
+                
+                // Draw vortex center if active
+                if (this.vortexActive) {
+                    this.ctx.beginPath();
+                    this.ctx.arc(this.vortexCenter.x, this.vortexCenter.y, 10, 0, Math.PI * 2);
+                    this.ctx.fillStyle = 'rgba(100, 200, 255, 0.5)';
+                    this.ctx.fill();
+                }
+                
+                // Draw black hole center if active
+                if (this.blackHoleActive) {
+                    this.ctx.beginPath();
+                    this.ctx.arc(this.blackHoleCenter.x, this.blackHoleCenter.y, 20, 0, Math.PI * 2);
+                    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                    this.ctx.fill();
+                    
+                    // Event horizon
+                    this.ctx.beginPath();
+                    this.ctx.arc(this.blackHoleCenter.x, this.blackHoleCenter.y, 50, 0, Math.PI * 2);
+                    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
                     this.ctx.lineWidth = 2;
                     this.ctx.stroke();
                 }
