@@ -18,6 +18,10 @@
   font-family: "Inter", sans-serif;
 }
 
+a {
+  color: lightblue;
+}
+
 body {
   background: var(--dark-bg);
   color: var(--text-primary);
