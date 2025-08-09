@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Particle Explorer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- FPS Warning -->
+    <div class="fps-warning" id="fpsWarning">
+        Low FPS detected! Optimizing system...
+    </div>
+    
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <h1>Quantum Particle Explorer</h1>
+            <p>Visualize quantum computing principles through interactive particle dynamics</p>
+        </div>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="fpsCounter">60</div>
+                <div class="stat-label">FPS</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="particleCounter">150</div>
+                <div class="stat-label">Qubits</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="entanglementCounter">0</div>
+                <div class="stat-label">Entangled</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <div class="panel-tabs">
+                <div class="tab active" data-tab="parameters">Parameters</div>
+                <div class="tab" data-tab="effects">Effects</div>
+                <div class="tab" data-tab="algorithms">Algorithms</div>
+            </div>
+            
+            <div class="tab-content">
+                <!-- Parameters Tab -->
+                <div class="tab-pane active" id="parameters-tab">
+                    <div class="card">
+                        <div class="card-title">
+                            <i class="material-icons">tune</i>
+                            System Parameters
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="particleCount">Qubit Count: <span class="value-display" id="particleCountValue">150</span></label>
+                            <input type="range" id="particleCount" min="50" max="500" value="150">
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="connectionRadius">Entanglement Radius: <span class="value-display" id="connectionRadiusValue">150</span></label>
+                            <input type="range" id="connectionRadius" min="50" max="300" value="150">
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="particleSpeed">Quantum Speed: <span class="value-display" id="particleSpeedValue">1.0</span></label>
+                            <input type="range" id="particleSpeed" min="0.1" max="3.0" step="0.1" value="1.0">
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="glowIntensity">Superposition Glow: <span class="value-display" id="glowIntensityValue">20</span></label>
+                            <input type="range" id="glowIntensity" min="5" max="40" value="20">
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-title">
+                            <i class="material-icons">palette</i>
+                            Visual Styles
+                        </div>
+                        <div class="button-grid">
+                            <button data-preset="cosmic">
+                                <i class="material-icons">dark_mode</i> Cosmic
+                            </button>
+                            <button data-preset="matrix">
+                                <i class="material-icons">code</i> Matrix
+                            </button>
+                            <button data-preset="fireflies">
+                                <i class="material-icons">flare</i> Fireflies
+                            </button>
+                            <button data-preset="rainbow">
+                                <i class="material-icons">gradient</i> Rainbow
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button class="special-button" id="randomizeBtn">
+                        <i class="material-icons">shuffle</i> Quantum Randomize
+                    </button>
+                </div>
+                
+                <!-- Effects Tab -->
+                <div class="tab-pane" id="effects-tab">
+                    <div class="card">
+                        <div class="card-title">
+                            <i class="material-icons">waves</i>
+                            Physics Effects
+                        </div>
+                        <div class="button-grid">
+                            <button id="gravityBtn">
+                                <i class="material-icons">compress</i> Gravity
+                            </button>
+                            <button id="timeBtn">
+                                <i class="material-icons">schedule</i> Time Dilation
+                            </button>
+                            <button id="vortexBtn">
+                                <i class="material-icons">rotate_right</i> Vortex
+                            </button>
+                            <button id="blackholeBtn">
+                                <i class="material-icons">filter_center_focus</i> Black Hole
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-title">
+                            <i class="material-icons">color_lens</i>
+                            Visual Effects
+                        </div>
+                        <div class="button-grid">
+                            <button id="colorBtn">
+                                <i class="material-icons">colorize</i> Color Wave
+                            </button>
+                            <button id="repulsionBtn">
+                                <i class="material-icons">close</i> Repulsion
+                            </button>
+                            <button id="pulseBtn">
+                                <i class="material-icons">waves</i> Pulse Wave
+                            </button>
+                            <button id="tornadoBtn">
+                                <i class="material-icons">cyclone</i> Tornado
+                            </button>
+                            <button id="trailsBtn">
+                                <i class="material-icons">timeline</i> Trails
+                            </button>
+                            <button id="explosionBtn">
+                                <i class="material-icons">explosion</i> Collapse
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button class="special-button" id="entanglementBtn">
+                        <i class="material-icons">link</i> Create Entanglement
+                    </button>
+                </div>
+                
+                <!-- Algorithms Tab -->
+                <div class="tab-pane" id="algorithms-tab">
+                    <div class="card">
+                        <div class="card-title">
+                            <i class="material-icons">calculate</i>
+                            Quantum Algorithms
+                        </div>
+                        <div class="button-grid">
+                            <button id="groverBtn" class="algorithm-btn">
+                                <i class="material-icons">search</i> Grover's Search
+                            </button>
+                            <button id="shorBtn" class="algorithm-btn">
+                                <i class="material-icons">functions</i> Shor's Algorithm
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="info-panel">
+                        <h3><i class="material-icons">science</i> Quantum Superposition</h3>
+                        <p>Particles exist in multiple states simultaneously: <span class="quantum-state">α|0⟩ + β|1⟩</span></p>
+                    </div>
+                    
+                    <div class="info-panel">
+                        <h3><i class="material-icons">hub</i> Quantum Entanglement</h3>
+                        <p>Connected particles share a quantum state, affecting each other instantly regardless of distance.</p>
+                    </div>
+                    
+                    <div class="applications-panel">
+                        <h3><i class="material-icons">public</i> Real-World Applications</h3>
+                        <div class="applications-list">
+                            <span class="application-tag">Drug Discovery</span>
+                            <span class="application-tag">Cryptography</span>
+                            <span class="application-tag">Optimization</span>
+                            <span class="application-tag">AI Training</span>
+                            <span class="application-tag">Financial Modeling</span>
+                            <span class="application-tag">Material Science</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Visualization Area -->
+        <div class="visualization">
+            <canvas id="quantumCanvas"></canvas>
+            <div class="algorithm-viz">
+                <div class="quantum-circuit" id="circuitContainer"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-item">
+            <span>Quantum State:</span>
+            <div class="value" id="quantumState">|ψ⟩</div>
+        </div>
+        <div class="footer-item">
+            <span>Current Effect:</span>
+            <div class="value" id="currentEffect">None</div>
+        </div>
+        <div class="footer-item">
+            <button id="resetBtn">
+                <i class="material-icons">refresh</i> Reset System
+            </button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
